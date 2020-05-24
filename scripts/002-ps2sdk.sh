@@ -14,6 +14,9 @@ else
 		git reset --hard origin/master || exit 1
 fi
 
+# We reset to the concrete tag
+git reset --hard v1.0 || { exit 1; }
+
 ## Determine the maximum number of processes that Make can work with.
 #OSVER=$(uname)
 #if [ ${OSVER:0:10} == MINGW32_NT ]; then

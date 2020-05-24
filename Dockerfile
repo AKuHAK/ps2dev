@@ -1,11 +1,9 @@
-ARG BASE_DOCKER_IMAGE
-
-FROM $BASE_DOCKER_IMAGE
+FROM alpine:latest
 
 COPY . /src
 
 RUN apk add build-base git bash patch wget zlib-dev ucl-dev
-RUN cd /src && ./build-extra.sh
+RUN cd /src && ./build-all.sh
 
 # Second stage of Dockerfile
 FROM alpine:latest  

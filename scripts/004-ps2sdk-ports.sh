@@ -10,5 +10,8 @@ else
 		git reset --hard origin/master || exit 1
 fi
 
+# We reset to the concrete tag
+git reset --hard v1.0 || { exit 1; }
+
 ## Build and install.
 make --quiet || { exit 1; }

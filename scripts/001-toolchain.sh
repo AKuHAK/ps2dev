@@ -10,5 +10,8 @@ else
 		git reset --hard origin/master || exit 1
 fi
 
+# We reset to the concrete branch
+git checkout v1.y || { exit 1; }
+
 ## Build and install.
 ./toolchain.sh || { exit 1; }
