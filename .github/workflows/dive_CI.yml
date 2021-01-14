@@ -16,5 +16,4 @@ jobs:
           config-file: ${{ github.workspace }}/.dive-ci.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          docker pull ps2dev/ps2dev:latest
-          docker history ps2dev/ps2dev:latest | awk 'NR>1 {print $1}' | xargs docker inspect --format '{{ ((index .ContainerConfig.Cmd ) 0) }}'
+          docker history ps2dev | awk 'NR>1 {print $1}' | xargs docker inspect --format '{{ ((index .ContainerConfig.Cmd ) 0) }}'
