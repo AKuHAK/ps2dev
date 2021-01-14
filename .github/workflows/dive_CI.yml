@@ -15,4 +15,4 @@ jobs:
           image: ps2dev/ps2dev:v1.2.0
           config-file: ${{ github.workspace }}/.dive-ci.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: docker history myimage | awk 'NR>1 {print $1}' | xargs docker inspect --format '{{ ((index .ContainerConfig.Cmd ) 0) }}'
+      - run: docker history ps2dev/ps2dev:latest | awk 'NR>1 {print $1}' | xargs docker inspect --format '{{ ((index .ContainerConfig.Cmd ) 0) }}'
