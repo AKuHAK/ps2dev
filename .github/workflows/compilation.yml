@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -34,7 +34,10 @@ jobs:
         export PS2SDK=$PS2DEV/ps2sdk
         export GSKIT=$PS2DEV/gsKit
         export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
-        ./build-all.sh
+        cd /src
+        ./build-all.sh 1 2 3 4; \
+        ln -sf "$PS2SDK/ee/lib/libc.a" "$PS2DEV/ee/ee/lib/libps2sdkc.a"; \
+        ./build-all.sh 5 6'
 
     - name: Get short SHA
       id: slug
