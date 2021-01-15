@@ -2,8 +2,6 @@ name: CI-Docker
 
 on:
   push:
-    branches:
-      - master
   repository_dispatch:
     types: [run_build]
 
