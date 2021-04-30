@@ -2,7 +2,7 @@
 # ps2-packer.sh by fjtrujy
 
 ## Download the source code.
-REPO_URL="https://github.com/ps2dev/ps2toolchain"
+REPO_URL="https://github.com/akuhak/ps2toolchain"
 REPO_FOLDER="ps2toolchain"
 
 # Checking if a specific TAG has been selected, it is passed using parameter $1
