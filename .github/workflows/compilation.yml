@@ -96,7 +96,7 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW32
-        install: git msys2-devel base-devel binutils mingw-w64-i686-gcc binutils git unzip make texinfo tar patch mpc-devel p7zip man bison flex
+        install: git msys2-devel base-devel binutils mingw-w64-i686-gcc binutils git unzip make texinfo tar patch mpc-devel p7zip man bison flex cmake
         update: true
         shell: msys2 {0}
 
