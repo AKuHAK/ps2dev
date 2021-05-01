@@ -106,6 +106,8 @@ jobs:
         export PS2SDK=$PS2DEV/ps2sdk
         export GSKIT=$PS2DEV/gsKit
         export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
+        export lt_cv_sys_max_cmd_len=8000
+        export CC=i686-w64-mingw32-gcc
         ./build-all.sh
 
     - name: Get short SHA
