@@ -96,7 +96,10 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW32
-        install: git msys2-devel base-devel binutils mingw-w64-i686-gcc binutils git unzip make texinfo tar patch mpc-devel p7zip man bison flex cmake
+        install: |
+          git msys2-devel base-devel binutils binutils git unzip make texinfo tar patch mpc-devel p7zip man bison flex
+          mingw-w64-i686-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-extra-cmake-modules mingw-w64-x86_64-make
+          mingw-w64-x86_64-gdb mingw-w64-x86_64-toolchain
         update: true
         shell: msys2 {0}
 
@@ -106,9 +109,11 @@ jobs:
         export PS2SDK=$PS2DEV/ps2sdk
         export GSKIT=$PS2DEV/gsKit
         export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
-        export lt_cv_sys_max_cmd_len=8000
-        export CC=i686-w64-mingw32-gcc
-        ./build-all.sh
+        ./build-all.sh 1 2 3 5
+        git clone https://github.com/ps2dev/ps2sdk-ports
+        cd ps2sdk-ports
+        ./build-cmakelibs-mingw32.sh
+        make aalib expat libconfig libid3tag libjpeg libmad libmikmod libtap libtiff lua madplay sdl sdlgfx sdlimage sdlmixer sdlttf
 
     - name: Get short SHA
       id: slug
