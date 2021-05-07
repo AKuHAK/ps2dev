@@ -110,11 +110,11 @@ jobs:
         export GSKIT=$PS2DEV/gsKit
         export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
         ./build-all.sh 1 2 3 5
-        git clone https://github.com/ps2dev/ps2sdk-ports
+        git clone https://github.com/akuhak/ps2sdk-ports -b AKuHAK-patch-1
         cd ps2sdk-ports
         ./build-cmakelibs-mingw32.sh
         make aalib expat libconfig libid3tag libjpeg libmad libmikmod libtap libtiff lua madplay sdl sdlgfx sdlimage sdlmixer sdlttf
-
+        cd ..
     - name: Get short SHA
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
