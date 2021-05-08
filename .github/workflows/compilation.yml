@@ -8,10 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os[0] }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [[macos-latest, bash], [ubuntu-latest, bash], [windows-latest, msys2]]
+    defaults:
+     run:
+      shell: ${{ matrix.os[1] }} {0}
 
     steps:
     - uses: actions/checkout@v2
@@ -29,6 +32,18 @@ jobs:
       run: |
         brew update
         brew install texinfo bison flex gnu-sed gsl gmp mpfr
+
+    - name: Install MSYS2 texinfo bison flex
+      if: matrix.os[0] == 'windows-latest'
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW32
+        install: |
+          base-devel git make texinfo flex bison patch binutils mingw-w64-i686-gcc mpc-devel tar
+          mingw-w64-i686-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-extra-cmake-modules mingw-w64-x86_64-make
+          mingw-w64-x86_64-gdb mingw-w64-x86_64-toolchain
+        update: true
+        shell: msys2 {0}
 
     - name: Runs all the stages in the shell
       run: |
@@ -77,82 +92,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: ps2dev-${{matrix.os}}.tar.gz
-        tag_name: ${{ steps.tag.outputs.VERSION }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-win:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Install MSYS2 texinfo bison flex
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        install: |
-          git msys2-devel base-devel binutils binutils git unzip make texinfo tar patch mpc-devel p7zip man bison flex
-          mingw-w64-i686-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-extra-cmake-modules mingw-w64-x86_64-make
-          mingw-w64-x86_64-gdb mingw-w64-x86_64-toolchain
-        update: true
-        shell: msys2 {0}
-
-    - name: Runs all the stages in the shell
-      run: |
-        export PS2DEV=$PWD/ps2dev
-        export PS2SDK=$PS2DEV/ps2sdk
-        export GSKIT=$PS2DEV/gsKit
-        export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
-        ./build-all.sh 1 2 3 5
-        git clone https://github.com/akuhak/ps2sdk-ports -b AKuHAK-patch-1
-        cd ps2sdk-ports
-        ./build-cmakelibs.sh
-        make aalib expat libconfig libid3tag libjpeg libmad libmikmod libtap libtiff lua madplay sdl sdlgfx sdlimage sdlmixer sdlttf
-        cd ..
-    - name: Get short SHA
-      id: slug
-      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-    
-    - name: Compress ps2dev folder
-      run: |
-        tar -zcvf ps2dev.tar.gz ps2dev
-    
-    - uses: actions/upload-artifact@v2
-      with:
-        name: ps2dev-${{ steps.slug.outputs.sha8 }}-windows-latest
-        path: ps2dev.tar.gz
-    
-    - name: Rename ps2dev.tar.gz file
-      run: |
-        mv ps2dev.tar.gz ps2dev-windows-latest.tar.gz
-
-    - name: Extract tag name
-      if: startsWith(github.ref, 'refs/tags/')
-      id: tag
-      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-
-    - name: Create pre-release
-      if: github.ref == 'refs/heads/master'
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ps2dev-windows-latest.tar.gz
-        prerelease: true
-        name: "Development build"
-        tag_name: "latest"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ps2dev-windows-latest.tar.gz
         tag_name: ${{ steps.tag.outputs.VERSION }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
