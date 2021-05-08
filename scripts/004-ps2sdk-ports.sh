@@ -2,11 +2,11 @@
 # ps2sdk-ports.sh by fjtrujy
 
 ## Download the source code.
-REPO_URL="https://github.com/ps2dev/ps2sdk-ports"
+REPO_URL="https://github.com/akuhak/ps2sdk-ports"
 REPO_FOLDER="ps2sdk-ports"
 
 # Checking if a specific TAG has been selected, it is passed using parameter $1
-[  -z "$1" ] && REPO_REFERENCE="master" || REPO_REFERENCE=$1
+[  -z "$1" ] && REPO_REFERENCE="patch-1" || REPO_REFERENCE=$1
 echo "Using repo reference $REPO_REFERENCE"
 
 if test ! -d "$REPO_FOLDER"; then
