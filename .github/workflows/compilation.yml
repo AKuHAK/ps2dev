@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os[0] }}
     strategy:
       matrix:
-        os: [[macos-latest, bash], [ubuntu-latest, bash], [windows-latest, msys2]]
+        os: [[macos-latest, sh], [ubuntu-latest, bash], [windows-latest, msys2]]
     defaults:
      run:
       shell: ${{ matrix.os[1] }} {0}
@@ -51,7 +51,7 @@ jobs:
         export GSKIT=$PS2DEV/gsKit
         export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
         export PATH=$PATH:$PS2DEV/bin:$PS2DEV/ee/bin:$PS2DEV/iop/bin:$PS2DEV/dvp/bin:$PS2SDK/bin
-        ./build-all.sh
+        ./build-all.sh 1 2 3 4 5
 
     - name: Get short SHA
       id: slug
