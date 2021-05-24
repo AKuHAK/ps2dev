@@ -47,6 +47,7 @@ jobs:
         shell: msys2 {0}
 
     - name: Runs all the stages in the shell
+      continue-on-error: true
       run: |
         export PS2DEV=$PWD/ps2dev
         export PS2SDK=$PS2DEV/ps2sdk
