@@ -21,10 +21,6 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Get short SHA
-      id: slug
-      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-    
     - name: Install Ubuntu texinfo bison flex libucl-dev
       if: matrix.os[0] == 'ubuntu-latest'
       run: |
@@ -60,6 +56,10 @@ jobs:
         # ./build-all.sh
         ./build-all.sh 1 2 3 4 5
 
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
     - name: Compress ps2dev folder
       run: |
         tar -zcvf ps2dev.tar.gz ps2dev
